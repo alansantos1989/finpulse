@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Painel do Cliente - FinPulse</title>
+<style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #F18F01;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .logout {
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary);
+        }
+
+        ul, li {
+            padding: 0;
+            margin: 0 0 0.5rem 0;
+            list-style: none;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #e07f00;
+        }
+    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap');
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #F6F6F6;
+        color: #2E4C5A;
+        margin: 0;
+        padding: 0;
+    }
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif;
+        color: #2E4C5A;
+    }
+    a, button, .btn {
+        background-color: #D4AF37 !important;
+        color: white !important;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+    header, footer {
+        background-color: #2E4C5A;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    section {
+        padding: 2rem;
+        margin: 1rem auto;
+        background: white;
+        max-width: 900px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    </style></head>
+<body>
+<header>
+<div class="logo">Fin<span>Pulse</span></div>
+<button class="logout" onclick="logout()">Sair</button>
+</header>
+<div class="container">
+<h1>Olá, <span id="nomeCliente">Cliente</span></h1>
+<p>Bem-vindo ao seu painel FinPulse. Aqui estão algumas informações úteis:</p>
+<h2>Resumo Básico</h2>
+<ul>
+<li><strong>Nome:</strong> <span id="nome"></span></li>
+<li><strong>Email:</strong> <span id="email"></span></li>
+<li><strong>Renda mensal:</strong> R$ <span id="renda"></span></li>
+<li><strong>Meta:</strong> <span id="meta"></span></li>
+</ul>
+<h2>Dicas de Controle Financeiro</h2>
+<ul>
+<li>💡 Separe 10% da sua renda para emergências</li>
+<li>📉 Evite parcelamentos acima de 12x</li>
+<li>📊 Revise seus gastos semanalmente</li>
+<li>🏦 Priorize quitar dívidas com juros altos</li>
+</ul>
+<h2>Downloads</h2>
+<ul>
+<li><a download="" href="downloads/planilha-orcamento.xlsx">📥 Planilha de Orçamento Pessoal</a></li>
+<li><a download="" href="downloads/checklist-financeiro.pdf">📥 Checklist de Organização Financeira</a></li>
+</ul>
+<div style="margin-top: 2rem; text-align: center;">
+<p>Quer um plano detalhado com acompanhamento mensal?</p>
+<a class="cta-button" href="servicos.html">Conheça nossos planos pagos</a>
+</div>
+</div>
+<script>
+        // Simulação de dados vindo do localStorage
+        document.getElementById("nomeCliente").innerText = localStorage.getItem("userName") || "Cliente";
+        document.getElementById("nome").innerText = localStorage.getItem("userName") || "-";
+        document.getElementById("email").innerText = localStorage.getItem("userEmail") || "-";
+        document.getElementById("renda").innerText = localStorage.getItem("userIncome") || "-";
+        document.getElementById("meta").innerText = localStorage.getItem("userGoal") || "-";
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>

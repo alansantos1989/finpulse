@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<title>FinPulse - Questionário e Análise</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #F18F01;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            height: 10px;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .questionnaire-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .questionnaire-title {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .questionnaire-subtitle {
+            color: var(--primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .form-group .input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-group .input-group span {
+            padding: 0.8rem;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .form-group .input-group input {
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .radio-group, .checkbox-group {
+            margin-bottom: 0.5rem;
+        }
+        
+        .radio-group label, .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .radio-group input, .checkbox-group input {
+            margin-right: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e07f00;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 0.5rem;
+            color: var(--primary);
+            cursor: help;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Estilos para a seção de análise */
+        .analysis-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .analysis-title {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--secondary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .report-section {
+            margin-bottom: 3rem;
+            display: none;
+        }
+        
+        .report-section.active {
+            display: block;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .financial-score {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--secondary) 0% var(--score-percent), #f0f0f0 var(--score-percent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .score-label {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .badge-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .badge-info {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .action-plan {
+            margin-top: 1rem;
+        }
+        
+        .action-step {
+            display: flex;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .action-step:last-child {
+            border-bottom: none;
+        }
+        
+        .step-number {
+            background-color: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-deadline {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .priority-high {
+            border-left: 4px solid var(--danger);
+            padding-left: 1rem;
+        }
+        
+        .priority-medium {
+            border-left: 4px solid var(--warning);
+            padding-left: 1rem;
+        }
+        
+        .priority-low {
+            border-left: 4px solid var(--success);
+            padding-left: 1rem;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .questionnaire-container, .analysis-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .action-step {
+                flex-direction: column;
+            }
+            
+            .step-number {
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+        }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap');
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #F6F6F6;
+        color: #2E4C5A;
+        margin: 0;
+        padding: 0;
+    }
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif;
+        color: #2E4C5A;
+    }
+    a, button, .btn {
+        background-color: #D4AF37 !important;
+        color: white !important;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+    header, footer {
+        background-color: #2E4C5A;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    section {
+        padding: 2rem;
+        margin: 1rem auto;
+        background: white;
+        max-width: 900px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    </style></head>
+<body>
+<div id="questionario">
+<header>
+<div class="logo">Fin<span>Pulse</span></div>
+<div>Tempo estimado: 8-10 minutos</div>
+</header>
+<div class="progress-container">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="questionnaire-container">
+<h1 class="questionnaire-title">Questionário Financeiro Pessoal</h1>
+<p style="text-align: center; margin-bottom: 2rem;">Responda com sinceridade para receber um plano financeiro totalmente personalizado</p>
+<form id="financialQuestionnaire">
+<!-- Seção 1: Dados Pessoais -->
+<div class="section active" id="section1">
+<h2 class="questionnaire-subtitle">1. Informações Básicas</h2>
+<div class="form-group">
+<label for="name">Nome completo</label>
+<input id="name" name="name" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="email">E-mail</label>
+<input id="email" name="email" required="" type="email"/>
+</div>
+<div class="form-group">
+<label for="age">Idade</label>
+<input id="age" max="100" min="18" name="age" required="" type="number"/>
+</div>
+<div class="form-group">
+<label for="location">Cidade/Estado</label>
+<input id="location" name="location" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="family">Composição familiar</label>
+<select id="family" name="family" required="">
+<option value="">Selecione...</option>
+<option value="single">Solteiro(a)</option>
+<option value="married_no_kids">Casado/União estável sem filhos</option>
+<option value="married_with_kids">Casado/União estável com filhos</option>
+<option value="single_parent">Pai/Mãe solo</option>
+<option value="other">Outro</option>
+</select>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-primary" onclick="nextSection(1)" type="button">Próximo</button>
+</div>
+</div>
+<!-- Seção 2: Situação Financeira Atual -->
+<div class="section" id="section2">
+<h2 class="questionnaire-subtitle">2. Situação Financeira Atual</h2>
+<div class="form-group">
+<label for="income">Renda mensal líquida (salário + outros rendimentos)</label>
+<div class="input-group">
+<span>R$</span>
+<input id="income" min="0" name="income" required="" step="0.01" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label for="income_stability">Como você classificaria a estabilidade da sua renda?</label>
+<select id="incomeStability" name="incomeStability" required="">
+<option value="">Selecione...</option>
+<option value="very_stable">Muito estável (ex: funcionário público)</option>
+<option value="stable">Estável (ex: CLT)</option>
+<option value="variable">Variável (ex: comissões)</option>
+<option value="irregular">Irregular (ex: freelancer)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="expenses">Gastos mensais totais (em média)</label>
+<div class="input-group">
+<span>R$</span>
+<input id="expenses" min="0" name="expenses" required="" step="0.01" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label>Quais destes gastos você possui? <small>(marque todos que aplicar)</small></label>
+<div class="checkbox-group">
+<label><input name="expense_types" type="checkbox" value="rent"/> Aluguel/Financiamento imobiliário</label>
+</div>
+<div class="checkbox-group">
+<label><input name="expense_types" type="checkbox" value="car"/> Prestação de veículo</label>
+</div>
+<div class="checkbox-group">
+<label><input name="expense_types" type="checkbox" value="education"/> Mensalidades escolares/faculdade</label>
+</div>
+<div class="checkbox-group">
+<label><input name="expense_types" type="checkbox" value="health"/> Plano de saúde</label>
+</div>
+<div class="checkbox-group">
+<label><input name="expense_types" type="checkbox" value="other_loans"/> Outros empréstimos</label>
+</div>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-secondary" onclick="prevSection(2)" type="button">Voltar</button>
+<button class="btn btn-primary" onclick="nextSection(2)" type="button">Próximo</button>
+</div>
+</div>
+<!-- Seção 3: Dívidas e Compromissos -->
+<div class="section" id="section3">
+<h2 class="questionnaire-subtitle">3. Dívidas e Compromissos Financeiros</h2>
+<div class="form-group">
+<label for="debts">Você possui dívidas ativas?</label>
+<select id="debts" name="debts" onchange="toggleDebtDetails()" required="">
+<option value="">Selecione...</option>
+<option value="no">Não</option>
+<option value="yes">Sim</option>
+</select>
+</div>
+<div id="debtDetails" style="display: none;">
+<div class="form-group">
+<label>Tipos de dívidas <small>(marque todos que aplicar)</small></label>
+<div class="checkbox-group">
+<label><input name="debt_types" type="checkbox" value="credit_card"/> Cartão de crédito</label>
+</div>
+<div class="checkbox-group">
+<label><input name="debt_types" type="checkbox" value="personal_loan"/> Empréstimo pessoal</label>
+</div>
+<div class="checkbox-group">
+<label><input name="debt_types" type="checkbox" value="overdraft"/> Cheque especial</label>
+</div>
+<div class="checkbox-group">
+<label><input name="debt_types" type="checkbox" value="financing"/> Financiamento</label>
+</div>
+<div class="checkbox-group">
+<label><input name="debt_types" type="checkbox" value="other"/> Outros</label>
+</div>
+</div>
+<div class="form-group">
+<label for="total_debt">Valor total aproximado das dívidas</label>
+<div class="input-group">
+<span>R$</span>
+<input id="totalDebt" min="0" name="totalDebt" step="0.01" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label for="debt_payments">Valor total mensal dos pagamentos</label>
+<div class="input-group">
+<span>R$</span>
+<input id="debtPayments" min="0" name="debtPayments" step="0.01" type="number"/>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label for="financial_help">Você ajuda financeiramente algum familiar?</label>
+<select id="financial_help" name="financial_help" required="">
+<option value="">Selecione...</option>
+<option value="no">Não</option>
+<option value="yes">Sim, ocasionalmente</option>
+<option value="regular">Sim, regularmente</option>
+</select>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-secondary" onclick="prevSection(3)" type="button">Voltar</button>
+<button class="btn btn-primary" onclick="nextSection(3)" type="button">Próximo</button>
+</div>
+</div>
+<!-- Seção 4: Reservas e Investimentos -->
+<div class="section" id="section4">
+<h2 class="questionnaire-subtitle">4. Reservas e Investimentos</h2>
+<div class="form-group">
+<label for="emergency_fund">Você possui uma reserva de emergência?</label>
+<select id="emergencyFund" name="emergencyFund" required="">
+<option value="">Selecione...</option>
+<option value="no">Não</option>
+<option value="less_3">Sim, menos de 3 meses de gastos</option>
+<option value="3_6">Sim, de 3 a 6 meses de gastos</option>
+<option value="more_6">Sim, mais de 6 meses de gastos</option>
+</select>
+</div>
+<div class="form-group">
+<label for="investments">Você possui investimentos atualmente?</label>
+<select id="investments" name="investments" onchange="toggleInvestmentDetails()" required="">
+<option value="">Selecione...</option>
+<option value="no">Não</option>
+<option value="yes">Sim</option>
+</select>
+</div>
+<div id="investmentDetails" style="display: none;">
+<div class="form-group">
+<label>Tipos de investimentos <small>(marque todos que aplicar)</small></label>
+<div class="checkbox-group">
+<label><input name="investment_types" type="checkbox" value="savings"/> Poupança</label>
+</div>
+<div class="checkbox-group">
+<label><input name="investment_types" type="checkbox" value="fixed_income"/> Renda fixa (CDB, LCI, LCA, etc.)</label>
+</div>
+<div class="checkbox-group">
+<label><input name="investment_types" type="checkbox" value="stocks"/> Ações</label>
+</div>
+<div class="checkbox-group">
+<label><input name="investment_types" type="checkbox" value="funds"/> Fundos de investimento</label>
+</div>
+<div class="checkbox-group">
+<label><input name="investment_types" type="checkbox" value="real_estate"/> Imóveis</label>
+</div>
+<div class="checkbox-group">
+<label><input name="investment_types" type="checkbox" value="other"/> Outros</label>
+</div>
+</div>
+<div class="form-group">
+<label for="investment_value">Valor total aproximado dos investimentos</label>
+<div class="input-group">
+<span>R$</span>
+<input id="investmentValue" min="0" name="investmentValue" step="0.01" type="number"/>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label for="monthly_savings">Quanto você consegue poupar/investir por mês (em média)?</label>
+<div class="input-group">
+<span>R$</span>
+<input id="monthlySavings" min="0" name="monthlySavings" required="" step="0.01" type="number"/>
+</div>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-secondary" onclick="prevSection(4)" type="button">Voltar</button>
+<button class="btn btn-primary" onclick="nextSection(4)" type="button">Próximo</button>
+</div>
+</div>
+<!-- Seção 5: Metas Financeiras -->
+<div class="section" id="section5">
+<h2 class="questionnaire-subtitle">5. Metas Financeiras</h2>
+<div class="form-group">
+<label for="main_goal">Qual sua principal meta financeira no momento?</label>
+<select id="mainGoal" name="mainGoal" required="">
+<option value="">Selecione...</option>
+<option value="debt_free">Ficar livre de dívidas</option>
+<option value="emergency_fund">Construir reserva de emergência</option>
+<option value="retirement">Preparar para aposentadoria</option>
+<option value="house">Comprar uma casa</option>
+<option value="car">Comprar um carro</option>
+<option value="travel">Fazer uma viagem</option>
+<option value="education">Investir em educação</option>
+<option value="other">Outra</option>
+</select>
+</div>
+<div class="form-group">
+<label for="goal_timeframe">Em quanto tempo você gostaria de alcançar esta meta?</label>
+<select id="goalTimeframe" name="goalTimeframe" required="">
+<option value="">Selecione...</option>
+<option value="less_1">Menos de 1 ano</option>
+<option value="1_3">1 a 3 anos</option>
+<option value="3_5">3 a 5 anos</option>
+<option value="5_10">5 a 10 anos</option>
+<option value="more_10">Mais de 10 anos</option>
+</select>
+</div>
+<div class="form-group">
+<label for="goal_amount">Quanto você estima que precisará para esta meta? (se aplicável)</label>
+<div class="input-group">
+<span>R$</span>
+<input id="goalAmount" min="0" name="goalAmount" step="0.01" type="number"/>
+</div>
+</div>
+<div class="form-group">
+<label for="retirement_plan">Você já pensou em planejamento para aposentadoria?</label>
+<select id="retirementPlan" name="retirementPlan" required="">
+<option value="">Selecione...</option>
+<option value="no">Não</option>
+<option value="little">Um pouco</option>
+<option value="yes">Sim, já comecei a me preparar</option>
+<option value="advanced">Sim, tenho um plano avançado</option>
+</select>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-secondary" onclick="prevSection(5)" type="button">Voltar</button>
+<button class="btn btn-primary" onclick="nextSection(5)" type="button">Próximo</button>
+</div>
+</div>
+<!-- Seção 6: Perfil de Investidor -->
+<div class="section" id="section6">
+<h2 class="questionnaire-subtitle">6. Perfil de Investidor</h2>
+<div class="form-group">
+<label>Como você reagiria se seus investimentos perdessem 20% do valor em um mês?</label>
+<div class="radio-group">
+<label><input name="risk_tolerance" required="" type="radio" value="conservative"/> Venderia tudo para evitar maiores perdas</label>
+</div>
+<div class="radio-group">
+<label><input name="risk_tolerance" type="radio" value="moderate"/> Aguardaria para ver se recupera</label>
+</div>
+<div class="radio-group">
+<label><input name="risk_tolerance" type="radio" value="aggressive"/> Aproveitaria para comprar mais, já que está barato</label>
+</div>
+</div>
+<div class="form-group">
+<label>Por quanto tempo você normalmente deixa o dinheiro investido?</label>
+<div class="radio-group">
+<label><input name="investment_horizon" required="" type="radio" value="short"/> Menos de 1 ano</label>
+</div>
+<div class="radio-group">
+<label><input name="investment_horizon" type="radio" value="medium"/> De 1 a 3 anos</label>
+</div>
+<div class="radio-group">
+<label><input name="investment_horizon" type="radio" value="long"/> Mais de 3 anos</label>
+</div>
+</div>
+<div class="form-group">
+<label>Qual seu principal objetivo ao investir?</label>
+<div class="radio-group">
+<label><input name="investment_goal" required="" type="radio" value="preservation"/> Preservar o capital com baixo risco</label>
+</div>
+<div class="radio-group">
+<label><input name="investment_goal" type="radio" value="income"/> Gerar renda regular</label>
+</div>
+<div class="radio-group">
+<label><input name="investment_goal" type="radio" value="growth"/> Crescimento a longo prazo</label>
+</div>
+</div>
+<div class="form-group">
+<label for="financial_knowledge">Como você avalia seu conhecimento sobre investimentos?</label>
+<select id="financialKnowledge" name="financialKnowledge" required="">
+<option value="">Selecione...</option>
+<option value="beginner">Iniciante</option>
+<option value="intermediate">Intermediário</option>
+<option value="advanced">Avançado</option>
+</select>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-secondary" onclick="prevSection(6)" type="button">Voltar</button>
+<button class="btn btn-primary" onclick="nextSection(6)" type="button">Próximo</button>
+</div>
+</div>
+<!-- Seção 7: Finalização -->
+<div class="section" id="section7">
+<h2 class="questionnaire-subtitle">7. Finalização</h2>
+<div class="form-group">
+<label for="additional_info">Alguma informação adicional que gostaria de compartilhar sobre sua situação financeira?</label>
+<textarea id="additional_info" name="additional_info" rows="4"></textarea>
+</div>
+<div class="form-group">
+<label for="contact_preference">Como prefere receber seu plano financeiro?</label>
+<select id="contactPreference" name="contactPreference" required="">
+<option value="">Selecione...</option>
+<option value="email">Apenas por e-mail</option>
+<option value="whatsapp">WhatsApp</option>
+<option value="both">E-mail e WhatsApp</option>
+</select>
+</div>
+<div class="form-group">
+<label for="phone">Telefone para contato (com DDD)</label>
+<input id="phone" name="phone" placeholder="Opcional se não selecionou WhatsApp" type="tel"/>
+</div>
+<div class="form-group">
+<label><input name="terms" required="" type="checkbox"/> Eu concordo com os <a href="#" style="color: var(--primary);">Termos de Uso</a> e <a href="#" style="color: var(--primary);">Política de Privacidade</a> da FinPulse</label>
+</div>
+<div class="navigation-buttons">
+<button class="btn btn-secondary" onclick="prevSection(7)" type="button">Voltar</button>
+<button class="btn btn-primary" type="submit">Enviar Questionário</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+<div id="analise" style="display:none;">
+<header>
+<div class="logo">Fin<span>Pulse</span></div>
+<div>Plano Financeiro Personalizado</div>
+</header>
+<div class="analysis-container">
+<div class="loading" id="loadingSection">
+<div class="spinner"></div>
+<h2 class="analysis-title">Analisando suas respostas...</h2>
+<p>Nossa IA está processando suas informações para criar um plano 100% personalizado</p>
+</div>
+<div class="hidden" id="reportSection">
+<h1 class="analysis-title">Seu Plano Financeiro Personalizado</h1>
+<div class="tab-container">
+<div class="tab active" onclick="showTab('overview')">Visão Geral</div>
+<div class="tab" onclick="showTab('action-plan')">Plano de Ação</div>
+<div class="tab" onclick="showTab('details')">Detalhes</div>
+</div>
+<!-- Visão Geral -->
+<div class="report-section active" id="overviewTab">
+<div class="financial-score">
+<div class="score-circle" style="--score-percent: 65%">
+<div class="score-inner" id="scoreValue">65</div>
+</div>
+<div class="score-label">Sua Saúde Financeira</div>
+<p id="scoreDescription">Moderada - Há espaço para melhorias significativas</p>
+</div>
+<div class="card">
+<div class="card-title">Resumo da Sua Situação</div>
+<p id="situationSummary">Você tem uma renda estável, mas está gastando cerca de 95% do que ganha. Possui algumas dívidas com cartão de crédito e não tem reserva de emergência. Seu principal objetivo é comprar uma casa nos próximos 5 anos.</p>
+</div>
+<div class="card">
+<div class="card-title">Progresso em Direção às Suas Metas</div>
+<div id="goalsProgress">
+<!-- Dinamicamente preenchido pelo JavaScript -->
+</div>
+</div>
+<div class="chart-container">
+<canvas id="financeChart"></canvas>
+</div>
+<div class="card">
+<div class="card-title">Próximos Passos Prioritários</div>
+<div id="prioritySteps">
+<!-- Dinamicamente preenchido pelo JavaScript -->
+</div>
+</div>
+<button class="btn btn-primary" onclick="showTab('action-plan')">Ver Plano de Ação Completo</button>
+</div>
+<!-- Plano de Ação -->
+<div class="report-section" id="actionPlanTab">
+<h2 class="section-title">Plano de Ação Personalizado</h2>
+<p>Este plano foi criado especificamente para sua situação financeira atual e objetivos. Siga os passos na ordem recomendada para melhores resultados.</p>
+<div class="action-plan" id="fullActionPlan">
+<!-- Dinamicamente preenchido pelo JavaScript -->
+</div>
+<div class="card">
+<div class="card-title">Cronograma Recomendado</div>
+<div class="chart-container">
+<canvas id="timelineChart"></canvas>
+</div>
+</div>
+<button class="btn btn-primary" onclick="downloadPlan()">Baixar Plano Completo (PDF)</button>
+<button class="btn btn-outline" onclick="showTab('overview')">Voltar para Visão Geral</button>
+</div>
+<!-- Detalhes -->
+<div class="report-section" id="detailsTab">
+<h2 class="section-title">Análise Detalhada</h2>
+<div class="card">
+<div class="card-title">Renda vs. Gastos</div>
+<div class="chart-container">
+<canvas id="incomeChart"></canvas>
+</div>
+<div id="incomeAnalysis">
+<!-- Dinamicamente preenchido pelo JavaScript -->
+</div>
+</div>
+<div class="card">
+<div class="card-title">Análise de Dívidas</div>
+<div class="chart-container">
+<canvas id="debtChart"></canvas>
+</div>
+<div id="debtAnalysis">
+<!-- Dinamicamente preenchido pelo JavaScript -->
+</div>
+</div>
+<div class="card">
+<div class="card-title">Estratégia de Investimentos</div>
+<div class="chart-container">
+<canvas id="investmentChart"></canvas>
+</div>
+<div id="investmentAnalysis">
+<!-- Dinamicamente preenchido pelo JavaScript -->
+</div>
+</div>
+<button class="btn btn-primary" onclick="showTab('action-plan')">Ver Plano de Ação</button>
+<button class="btn btn-outline" onclick="showTab('overview')">Voltar para Visão Geral</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Navegação entre seções do questionário
+        let currentSection = 1;
+        const totalSections = 7;
+
+        function updateProgressBar() {
+            const progress = (currentSection / totalSections) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function nextSection(current) {
+            // Valida os campos obrigatórios antes de avançar
+            const currentSectionElement = document.getElementById('section' + current);
+            const requiredInputs = currentSectionElement.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredInputs.forEach(input => {
+                if (!input.value) {
+                    input.style.borderColor = 'red';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '#ddd';
+                }
+            });
+
+            if (!isValid) {
+                alert('Por favor, preencha todos os campos obrigatórios antes de continuar.');
+                return;
+            }
+
+            // Esconde a seção atual
+            currentSectionElement.classList.remove('active');
+            
+            // Avança para a próxima seção
+            currentSection = current + 1;
+            document.getElementById('section' + currentSection).classList.add('active');
+            updateProgressBar();
+        }
+
+        function prevSection(current) {
+            document.getElementById('section' + current).classList.remove('active');
+            currentSection = current - 1;
+            document.getElementById('section' + currentSection).classList.add('active');
+            updateProgressBar();
+        }
+
+        function toggleDebtDetails() {
+            const debtSelect = document.getElementById('debts');
+            const debtDetails = document.getElementById('debtDetails');
+            
+            if (debtSelect.value === 'yes') {
+                debtDetails.style.display = 'block';
+            } else {
+                debtDetails.style.display = 'none';
+            }
+        }
+
+        function toggleInvestmentDetails() {
+            const investmentSelect = document.getElementById('investments');
+            const investmentDetails = document.getElementById('investmentDetails');
+            
+            if (investmentSelect.value === 'yes') {
+                investmentDetails.style.display = 'block';
+            } else {
+                investmentDetails.style.display = 'none';
+            }
+        }
+
+        // Mostra a análise e processa os dados
+        function showAnalysis() {
+            document.getElementById("questionario").style.display = "none";
+            document.getElementById("analise").style.display = "block";
+            
+            // Processa o formulário
+            const form = document.getElementById("financialQuestionnaire");
+            const formData = new FormData(form);
+            const data = {};
+
+            formData.forEach((value, key) => {
+                if (key === "expense_types" || key === "debt_types" || key === "investment_types") {
+                    if (!data[key]) data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            localStorage.setItem("financialData", JSON.stringify(data));
+            
+            // Inicia o processamento
+            setTimeout(function() {
+                document.getElementById('loadingSection').classList.add('hidden');
+                document.getElementById('reportSection').classList.remove('hidden');
+                generateReport();
+            }, 1500);
+        }
+
+        // Gera o relatório completo
+        function generateReport() {
+            // Recupera os dados do localStorage
+            let userData = {};
+            try {
+                const savedData = localStorage.getItem('financialData');
+                if (savedData) {
+                    userData = JSON.parse(savedData);
+                }
+            } catch (e) {
+                console.error("Error loading user data:", e);
+            }
+
+            // Calcula métricas financeiras
+            const metrics = calculateFinancialMetrics(userData);
+            
+            // Atualiza o cabeçalho com o nome do usuário
+            document.querySelector('.analysis-title').textContent = `Plano Financeiro Personalizado para ${metrics.name}`;
+            
+            // Gera todas as seções do relatório
+            calculateScore(metrics);
+            generateCharts(metrics);
+            createActionPlan(metrics);
+            generatePrioritySteps(metrics);
+            generateGoalsProgress(metrics);
+            generateDetailedAnalysis(metrics);
+            
+            // Atualiza o resumo da situação
+            document.getElementById('situationSummary').textContent = generateSituationSummary(metrics);
+        }
+
+        // Calcula métricas financeiras baseadas nas respostas
+        function calculateFinancialMetrics(userData) {
+            // Calcula saldo mensal
+            const income = parseFloat(userData.income) || 0;
+            const expenses = parseFloat(userData.expenses) || 0;
+            const monthlyBalance = income - expenses;
+            
+            // Calcula dívidas totais (se existirem)
+            let totalDebt = 0;
+            let monthlyDebtPayments = 0;
+            
+            if (userData.debts === 'yes') {
+                totalDebt = parseFloat(userData.totalDebt) || 0;
+                monthlyDebtPayments = parseFloat(userData.debtPayments) || 0;
+            }
+            
+            // Calcula reserva de emergência
+            let emergencyFundMonths = 0;
+            if (userData.emergency_fund !== 'no') {
+                emergencyFundMonths = userData.emergency_fund === 'less_3' ? 1 : 
+                                    userData.emergency_fund === '3_6' ? 4.5 : 8;
+            }
+            
+            // Calcula valor dos investimentos
+            let investmentValue = 0;
+            if (userData.investments === 'yes') {
+                investmentValue = parseFloat(userData.investment_value) || 0;
+            }
+            
+            // Retorna objeto com todas as métricas
+            return {
+                name: userData.name || "Usuário",
+                age: parseInt(userData.age) || 0,
+                income: income,
+                expenses: expenses,
+                monthlyBalance: monthlyBalance,
+                debtTotal: totalDebt,
+                debtMonthly: monthlyDebtPayments,
+                emergencyFundMonths: emergencyFundMonths,
+                investmentValue: investmentValue,
+                monthlySavings: parseFloat(userData.monthly_savings) || 0,
+                mainGoal: userData.main_goal || "",
+                goalAmount: parseFloat(userData.goal_amount) || 0,
+                goalTimeframe: userData.goal_timeframe || "",
+                riskTolerance: userData.risk_tolerance || "",
+                financialKnowledge: userData.financial_knowledge || "",
+                expenseTypes: userData.expense_types || [],
+                debtTypes: userData.debt_types || [],
+                investmentTypes: userData.investment_types || []
+            };
+        }
+
+        // Gera um resumo personalizado da situação financeira
+        function generateSituationSummary(metrics) {
+            let summary = `${metrics.name}, ${metrics.age} anos, `;
+            
+            // Situação de renda
+            if (metrics.income > 0) {
+                summary += `com renda mensal de R$${metrics.income.toFixed(2)}, `;
+                
+                // Situação de gastos
+                if (metrics.expenses > 0) {
+                    const expenseRatio = (metrics.expenses / metrics.income) * 100;
+                    summary += `gastando ${expenseRatio.toFixed(0)}% do que ganha (R$${metrics.expenses.toFixed(2)}). `;
+                    
+                    if (expenseRatio > 90) {
+                        summary += "Você está vivendo no limite do seu orçamento. ";
+                    } else if (expenseRatio > 70) {
+                        summary += "Você tem algum espaço para economias. ";
+                    } else {
+                        summary += "Você tem boa margem para poupar e investir. ";
+                    }
+                }
+            }
+            
+            // Situação de dívidas
+            if (metrics.debtTotal > 0) {
+                summary += `Possui dívidas totais de R$${metrics.debtTotal.toFixed(2)} com pagamentos mensais de R$${metrics.debtMonthly.toFixed(2)}. `;
+                
+                const debtRatio = (metrics.debtMonthly / metrics.income) * 100;
+                if (debtRatio > 30) {
+                    summary += "As parcelas estão comprometendo significativamente sua renda. ";
+                } else if (debtRatio > 15) {
+                    summary += "As parcelas têm um impacto moderado em suas finanças. ";
+                } else {
+                    summary += "As parcelas estão em um nível gerenciável. ";
+                }
+            } else {
+                summary += "Não possui dívidas ativas. ";
+            }
+            
+            // Situação de reserva
+            if (metrics.emergencyFundMonths > 0) {
+                summary += `Possui reserva para ${metrics.emergencyFundMonths} ${metrics.emergencyFundMonths > 1 ? 'meses' : 'mês'} de gastos. `;
+            } else {
+                summary += "Não possui reserva de emergência. ";
+            }
+            
+            // Metas
+            if (metrics.mainGoal) {
+                const goals = {
+                    'debt_free': "ficar livre de dívidas",
+                    'emergency_fund': "construir reserva de emergência",
+                    'retirement': "preparar para aposentadoria",
+                    'house': "comprar uma casa",
+                    'car': "comprar um carro",
+                    'travel': "fazer uma viagem",
+                    'education': "investir em educação",
+                    'other': "outra meta financeira"
+                };
+                
+                const timeframes = {
+                    'less_1': "menos de 1 ano",
+                    '1_3': "1 a 3 anos",
+                    '3_5': "3 a 5 anos",
+                    '5_10': "5 a 10 anos",
+                    'more_10': "mais de 10 anos"
+                };
+                
+                summary += `Sua principal meta é ${goals[metrics.mainGoal]}`;
+                
+                if (metrics.goalTimeframe) {
+                    summary += ` em ${timeframes[metrics.goalTimeframe]}`;
+                }
+                
+                if (metrics.goalAmount > 0) {
+                    summary += `, com valor estimado de R$${metrics.goalAmount.toFixed(2)}.`;
+                } else {
+                    summary += ".";
+                }
+            }
+            
+            return summary;
+        }
+
+        // Calcula o score financeiro
+        function calculateScore(metrics) {
+            let score = 50; // Pontuação base
+            
+            // Ajustes baseados na relação renda/gastos
+            const expenseRatio = metrics.expenses / metrics.income;
+            if (expenseRatio > 0.9) score -= 20;
+            else if (expenseRatio > 0.7) score -= 10;
+            else if (expenseRatio > 0.5) score += 5;
+            else score += 15;
+            
+            // Ajustes baseados em dívidas
+            if (metrics.debtTotal > 0) {
+                const debtRatio = metrics.debtTotal / metrics.income;
+                if (debtRatio > 12) score -= 20; // Dívida > 1 ano de renda
+                else if (debtRatio > 6) score -= 10;
+                else if (debtRatio > 3) score -= 5;
+                else score += 5; // Dívida pequena em relação à renda
+            } else {
+                score += 10; // Sem dívidas
+            }
+            
+            // Ajustes baseados na reserva de emergência
+            if (metrics.emergencyFundMonths >= 6) score += 20;
+            else if (metrics.emergencyFundMonths >= 3) score += 10;
+            else if (metrics.emergencyFundMonths > 0) score += 5;
+            else score -= 10; // Sem reserva
+            
+            // Ajustes baseados em investimentos
+            if (metrics.investmentValue > 0) {
+                const investmentRatio = metrics.investmentValue / metrics.income;
+                if (investmentRatio > 12) score += 15;
+                else if (investmentRatio > 6) score += 10;
+                else if (investmentRatio > 3) score += 5;
+                else score += 3;
+            }
+            
+            // Ajustes baseados em poupança mensal
+            if (metrics.monthlySavings > 0) {
+                const savingsRatio = metrics.monthlySavings / metrics.income;
+                if (savingsRatio > 0.2) score += 15;
+                else if (savingsRatio > 0.1) score += 10;
+                else score += 5;
+            } else {
+                score -= 10; // Não poupa nada
+            }
+            
+            // Limita a pontuação entre 0 e 100
+            score = Math.max(0, Math.min(100, Math.round(score)));
+            
+            document.getElementById('scoreValue').textContent = score;
+            
+            // Atualiza a descrição do score
+            let description = "";
+            if (score >= 80) description = "Excelente - Você está no caminho certo!";
+            else if (score >= 60) description = "Boa - Com algumas melhorias pode ficar excelente";
+            else if (score >= 40) description = "Moderada - Há espaço para melhorias significativas";
+            else description = "Crítica - Recomendamos ações imediatas";
+            
+            document.getElementById('scoreDescription').textContent = description;
+            document.querySelector('.score-circle').style.setProperty('--score-percent', `${score}%`);
+        }
+
+        // Gera todos os gráficos baseados nos dados do usuário
+        function generateCharts(metrics) {
+            // Gráfico principal - Distribuição Mensal de Recursos
+            const ctx = document.getElementById('financeChart').getContext('2d');
+            
+            // Calcula valores para o gráfico de distribuição
+            const essentialExpenses = metrics.expenses * 0.6; // Estimativa 60% essenciais
+            const nonEssentialExpenses = metrics.expenses * 0.4; // Estimativa 40% não-essenciais
+            const savingsInvestments = metrics.monthlySavings;
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gastos Essenciais', 'Gastos Não-Essenciais', 'Dívidas', 'Poupança/Investimentos'],
+                    datasets: [{
+                        data: [
+                            essentialExpenses,
+                            nonEssentialExpenses,
+                            metrics.debtMonthly,
+                            savingsInvestments
+                        ],
+                        backgroundColor: [
+                            '#2E86AB',
+                            '#F18F01',
+                            '#dc3545',
+                            '#28a745'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribuição Mensal de Recursos'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const percentage = (value / metrics.income * 100).toFixed(1);
+                                    return `${context.label}: R$${value.toFixed(2)} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de linha do tempo - Projeção de Metas Financeiras
+            const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+            
+            // Calcula projeções baseadas nas metas do usuário
+            const emergencyGoal = metrics.expenses * 3; // 3 meses de reserva
+            const monthlyEmergencySave = Math.min(metrics.monthlySavings * 0.5, emergencyGoal / 12); // 50% para reserva
+            
+            // Projeção para dívidas (se existirem)
+            let debtProjection = [metrics.debtTotal];
+            if (metrics.debtTotal > 0) {
+                const monthlyDebtPayment = Math.min(metrics.monthlySavings * 0.5, metrics.debtTotal / 12); // 50% para dívidas
+                for (let i = 1; i <= 5; i++) {
+                    const remaining = Math.max(0, debtProjection[i-1] - (monthlyDebtPayment * (i === 1 ? 1 : 3)));
+                    debtProjection.push(remaining);
+                }
+            } else {
+                debtProjection = [0, 0, 0, 0, 0, 0];
+            }
+            
+            // Projeção para metas (se existirem)
+            let goalProjection = [0];
+            if (metrics.goalAmount > 0) {
+                const monthlyGoalSave = metrics.monthlySavings * 0.5; // 50% para meta
+                for (let i = 1; i <= 5; i++) {
+                    const saved = goalProjection[i-1] + (monthlyGoalSave * (i === 1 ? 1 : 3));
+                    goalProjection.push(Math.min(saved, metrics.goalAmount));
+                }
+            } else {
+                goalProjection = [0, 0, 0, 0, 0, 0];
+            }
+            
+            new Chart(timelineCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mês 1', 'Mês 3', 'Mês 6', 'Mês 12', 'Mês 24', 'Mês 36'],
+                    datasets: [
+                        {
+                            label: 'Reserva de Emergência',
+                            data: [
+                                monthlyEmergencySave * 1,
+                                monthlyEmergencySave * 3,
+                                monthlyEmergencySave * 6,
+                                monthlyEmergencySave * 12,
+                                Math.min(monthlyEmergencySave * 24, emergencyGoal),
+                                Math.min(monthlyEmergencySave * 36, emergencyGoal)
+                            ],
+                            borderColor: '#2E86AB',
+                            backgroundColor: 'rgba(46, 134, 171, 0.1)',
+                            fill: true
+                        },
+                        {
+                            label: 'Dívidas Restantes',
+                            data: debtProjection,
+                            borderColor: '#dc3545',
+                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            fill: true
+                        },
+                        {
+                            label: 'Economia para Meta',
+                            data: goalProjection,
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Projeção de Metas Financeiras'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Gráficos adicionais na aba de detalhes
+            generateDetailCharts(metrics);
+        }
+
+        // Gera gráficos detalhados baseados nos dados do usuário
+        function generateDetailCharts(metrics) {
+            // Gráfico de renda vs gastos
+            const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+            new Chart(incomeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Renda', 'Gastos', 'Disponível'],
+                    datasets: [{
+                        label: 'Valores Mensais',
+                        data: [metrics.income, metrics.expenses, metrics.monthlyBalance],
+                        backgroundColor: [
+                            'rgba(46, 134, 171, 0.7)',
+                            'rgba(220, 53, 69, 0.7)',
+                            'rgba(40, 167, 69, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(46, 134, 171)',
+                            'rgb(220, 53, 69)',
+                            'rgb(40, 167, 69)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Balanço Mensal'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de dívidas (se existirem)
+            const debtCtx = document.getElementById('debtChart').getContext('2d');
+            if (metrics.debtTotal > 0 && metrics.debtTypes && metrics.debtTypes.length > 0) {
+                // Simula distribuição das dívidas por tipo (na prática, viria dos dados reais)
+                const debtDistribution = {
+                    'credit_card': metrics.debtTotal * 0.6,
+                    'personal_loan': metrics.debtTotal * 0.3,
+                    'financing': metrics.debtTotal * 0.1
+                };
+                
+                // Ajusta com base nos tipos de dívida informados
+                const debtLabels = [];
+                const debtData = [];
+                const debtColors = ['#dc3545', '#F18F01', '#6c757d'];
+                let colorIndex = 0;
+                
+                if (metrics.debtTypes.includes('credit_card')) {
+                    debtLabels.push('Cartão de Crédito');
+                    debtData.push(debtDistribution['credit_card']);
+                    colorIndex++;
+                }
+                if (metrics.debtTypes.includes('personal_loan')) {
+                    debtLabels.push('Empréstimo Pessoal');
+                    debtData.push(debtDistribution['personal_loan']);
+                    colorIndex++;
+                }
+                if (metrics.debtTypes.includes('financing')) {
+                    debtLabels.push('Financiamento');
+                    debtData.push(debtDistribution['financing']);
+                    colorIndex++;
+                }
+                if (metrics.debtTypes.includes('other')) {
+                    debtLabels.push('Outras Dívidas');
+                    debtData.push(metrics.debtTotal - debtData.reduce((a, b) => a + b, 0));
+                }
+                
+                new Chart(debtCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: debtLabels,
+                        datasets: [{
+                            data: debtData,
+                            backgroundColor: debtColors.slice(0, debtLabels.length)
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Composição das Dívidas'
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Mostra mensagem se não houver dívidas
+                document.getElementById('debtAnalysis').innerHTML = '<p>Nenhuma dívida registrada</p>';
+            }
+            
+            // Gráfico de estratégia de investimentos baseado no perfil
+            const investmentCtx = document.getElementById('investmentChart').getContext('2d');
+            
+            // Define estratégia baseada no perfil de risco
+            let strategyProfile;
+            switch (metrics.riskTolerance) {
+                case 'conservative':
+                    strategyProfile = [9, 8, 5, 6, 3]; // Alta segurança e liquidez, baixo risco
+                    break;
+                case 'aggressive':
+                    strategyProfile = [5, 4, 9, 8, 8]; // Alta rentabilidade e risco
+                    break;
+                default: // moderate
+                    strategyProfile = [7, 6, 6, 8, 5]; // Equilíbrio
+            }
+            
+            new Chart(investmentCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Segurança', 'Liquidez', 'Rentabilidade', 'Prazo', 'Risco'],
+                    datasets: [{
+                        label: 'Estratégia Recomendada',
+                        data: strategyProfile,
+                        backgroundColor: 'rgba(46, 134, 171, 0.2)',
+                        borderColor: 'rgb(46, 134, 171)',
+                        pointBackgroundColor: 'rgb(46, 134, 171)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(46, 134, 171)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Perfil de Investimento'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        // Cria o plano de ação completo baseado na situação do usuário
+        function createActionPlan(metrics) {
+            const actionPlanContainer = document.getElementById('fullActionPlan');
+            actionPlanContainer.innerHTML = '';
+            
+            const steps = [];
+            
+            // Passo 1: Reserva emergencial (se não tiver)
+            if (metrics.emergencyFundMonths < 3) {
+                const targetAmount = metrics.expenses * 3; // 3 meses de gastos
+                const monthlySave = Math.min(metrics.monthlySavings * 0.5, targetAmount / 6); // 50% para reserva
+                
+                steps.push({
+                    title: "Criar Reserva de Emergência",
+                    description: `Reserve R$${monthlySave.toFixed(2)} por mês até acumular R$${targetAmount.toFixed(2)} (3 meses de gastos). ` +
+                                 `Isso protege você de imprevistos sem precisar contrair novas dívidas.`,
+                    deadline: "Contínuo até completar",
+                    priority: "high"
+                });
+            }
+            
+            // Passo 2: Dívidas (se existirem)
+            if (metrics.debtTotal > 0) {
+                // Verifica se tem cartão de crédito (prioridade por juros altos)
+                if (metrics.debtTypes && metrics.debtTypes.includes('credit_card')) {
+                    steps.push({
+                        title: "Negociar Dívidas de Cartão de Crédito",
+                        description: "Contate seu banco para negociar taxas ou transfira o saldo para linha com juros menores. " +
+                                     "Cartões têm os juros mais altos (média de 300% ao ano).",
+                        deadline: "Imediato",
+                        priority: "high"
+                    });
+                }
+                
+                // Método de pagamento recomendado
+                const debtMethod = metrics.riskTolerance === 'conservative' ? 'Snowball (menor valor primeiro)' : 'Avalanche (maior juros primeiro)';
+                
+                steps.push({
+                    title: `Plano de Pagamento de Dívidas (Método ${debtMethod})`,
+                    description: `Aloque R$${(metrics.monthlySavings * 0.5).toFixed(2)} mensais para pagar dívidas. ` +
+                                 `Priorize ${debtMethod.includes('Avalanche') ? 'as com maiores juros' : 'as menores para motivação'}.`,
+                    deadline: "Contínuo até quitar",
+                    priority: metrics.debtTotal > metrics.income * 6 ? "high" : "medium"
+                });
+            }
+            
+            // Passo 3: Orçamento
+            steps.push({
+                title: "Implementar Orçamento 50-30-20",
+                description: `Estruture seus gastos em 50% necessidades (R$${(metrics.income * 0.5).toFixed(2)}), ` +
+                             `30% desejos (R$${(metrics.income * 0.3).toFixed(2)}) e 20% poupança/dívidas (R$${(metrics.income * 0.2).toFixed(2)}). ` +
+                             `Atualmente você gasta ${((metrics.expenses / metrics.income) * 100).toFixed(0)}% da renda.`,
+                deadline: "Imediato",
+                priority: (metrics.expenses / metrics.income) > 0.9 ? "high" : "medium"
+            });
+            
+            // Passo 4: Aumento de renda (se gastos > 70% da renda)
+            if ((metrics.expenses / metrics.income) > 0.7) {
+                steps.push({
+                    title: "Aumentar Fontes de Renda",
+                    description: "Considere freelances, trabalho extra ou venda de itens não usados para aumentar sua capacidade de poupar.",
+                    deadline: "Próximos 3 meses",
+                    priority: "medium"
+                });
+            }
+            
+            // Passo 5: Metas específicas
+            if (metrics.mainGoal) {
+                const goalName = {
+                    'debt_free': "eliminar dívidas",
+                    'emergency_fund': "construir reserva emergencial",
+                    'retirement': "planejar aposentadoria",
+                    'house': "comprar uma casa",
+                    'car': "comprar um carro",
+                    'travel': "fazer uma viagem",
+                    'education': "investir em educação",
+                    'other': "atingir sua meta financeira"
+                }[metrics.mainGoal];
+                
+                steps.push({
+                    title: `Planejar para ${goalName}`,
+                    description: metrics.goalAmount > 0 ?
+                        `Economize R$${(metrics.monthlySavings * 0.5).toFixed(2)}/mês para atingir R$${metrics.goalAmount.toFixed(2)}.` :
+                        "Defina um valor específico e prazo para melhor planejamento.",
+                    deadline: "Contínuo",
+                    priority: "low"
+                });
+            }
+            
+            // Passo 6: Investimentos (se não tiver dívidas e já tiver reserva)
+            if (metrics.debtTotal === 0 && metrics.emergencyFundMonths >= 3) {
+                steps.push({
+                    title: "Diversificar Investimentos",
+                    description: "Aloque recursos em acordo com seu perfil " + 
+                                 (metrics.riskTolerance === 'conservative' ? "conservador (Renda Fixa, CDBs)" :
+                                  metrics.riskTolerance === 'aggressive' ? "arrojado (Ações, ETFs)" :
+                                  "moderado (Fundos Balanceados)"),
+                    deadline: "Contínuo",
+                    priority: "low"
+                });
+            }
+            
+            // Adiciona todos os passos ao plano
+            steps.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = `action-step priority-${step.priority}`;
+                
+                stepElement.innerHTML = `
+                    <div class="step-number">${index + 1}</div>
+                    <div class="step-content">
+                        <div class="step-title">${step.title}</div>
+                        <p>${step.description}</p>
+                        <div class="step-deadline">Prazo: ${step.deadline}</div>
+                    </div>
+                `;
+                
+                actionPlanContainer.appendChild(stepElement);
+            });
+        }
+
+        // Gera os passos prioritários para a visão geral
+        function generatePrioritySteps(metrics) {
+            const container = document.getElementById('prioritySteps');
+            container.innerHTML = '';
+            
+            // Passo 1: Reserva emergencial (se não tiver)
+            if (metrics.emergencyFundMonths < 1) {
+                const targetAmount = metrics.expenses * 1; // 1 mês inicial
+                container.innerHTML += `
+                    <div class="action-step priority-high">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Criar Reserva Emergencial Básica</div>
+                            <p>Separe R$${targetAmount.toFixed(2)} (1 mês de gastos) para cobrir imprevistos.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Passo 2: Dívidas (se existirem)
+            if (metrics.debtTotal > 0) {
+                container.innerHTML += `
+                    <div class="action-step priority-high">
+                        <div class="step-number">${metrics.emergencyFundMonths < 1 ? 2 : 1}</div>
+                        <div class="step-content">
+                            <div class="step-title">Plano para Reduzir Dívidas</div>
+                            <p>Aloque R$${(metrics.monthlySavings * 0.5).toFixed(2)}/mês para pagar dívidas de R$${metrics.debtTotal.toFixed(2)}.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Passo 3: Orçamento
+            container.innerHTML += `
+                <div class="action-step priority-high">
+                    <div class="step-number">${
+                        (metrics.emergencyFundMonths < 1 ? 3 : (metrics.debtTotal > 0 ? 2 : 1))
+                    }</div>
+                    <div class="step-content">
+                        <div class="step-title">Ajustar Orçamento</div>
+                        <p>Reduza gastos não-essenciais em ${Math.max(10, 100 - (metrics.monthlyBalance / metrics.income * 100)).toFixed(0)}% para equilibrar suas finanças.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Gera a barra de progresso das metas
+        function generateGoalsProgress(metrics) {
+            const container = document.getElementById('goalsProgress');
+            
+            // Calcula progressos
+            const emergencyProgress = Math.min(100, (metrics.emergencyFundMonths / 3) * 100); // 3 meses é meta
+            const debtProgress = metrics.debtTotal > 0 ? 
+                Math.min(100, 100 - (metrics.debtTotal / (metrics.debtTotal + metrics.income * 6)) * 100) : 100;
+            const goalProgress = metrics.goalAmount > 0 ? 
+                Math.min(100, (metrics.investmentValue / metrics.goalAmount) * 100) : 0;
+            
+            container.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Reserva de Emergência (3 meses)</span>
+                        <span>${emergencyProgress.toFixed(0)}%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${emergencyProgress}%"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Pagamento de Dívidas</span>
+                        <span>${debtProgress.toFixed(0)}%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${debtProgress}%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Economia para Meta</span>
+                        <span>${goalProgress.toFixed(0)}%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${goalProgress}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Gera análises detalhadas baseadas nos dados do usuário
+        function generateDetailedAnalysis(metrics) {
+            // Análise de renda vs gastos
+            const expenseRatio = (metrics.expenses / metrics.income) * 100;
+            let incomeAnalysis = `
+                <p><strong>Análise:</strong> Você está gastando ${expenseRatio.toFixed(0)}% da sua renda mensal, 
+                deixando apenas R$${metrics.monthlyBalance.toFixed(2)} disponível. `;
+            
+            if (expenseRatio > 90) {
+                incomeAnalysis += "Isso indica uma situação financeira crítica onde quase toda sua renda está comprometida.";
+            } else if (expenseRatio > 70) {
+                incomeAnalysis += "Você tem pouco espaço para imprevistos ou investimentos.";
+            } else if (expenseRatio > 50) {
+                incomeAnalysis += "Você tem alguma capacidade de poupança que pode ser otimizada.";
+            } else {
+                incomeAnalysis += "Sua situação financeira está saudável com boa margem para poupar.";
+            }
+            
+            incomeAnalysis += `
+                </p>
+                <p>Distribuição ideal sugerida:</p>
+                <ul>
+                    <li>Necessidades (50%): R$${(metrics.income * 0.5).toFixed(2)}</li>
+                    <li>Desejos (30%): R$${(metrics.income * 0.3).toFixed(2)}</li>
+                    <li>Poupança/Dívidas (20%): R$${(metrics.income * 0.2).toFixed(2)}</li>
+                </ul>
+                <p>Você está ${metrics.monthlySavings > 0 ? `poupando R$${metrics.monthlySavings.toFixed(2)} por mês` : 'não está poupando atualmente'}.</p>
+            `;
+            
+            document.getElementById('incomeAnalysis').innerHTML = incomeAnalysis;
+            
+            // Análise de dívidas (se existirem)
+            let debtAnalysis = '';
+            if (metrics.debtTotal > 0) {
+                const debtRatio = (metrics.debtMonthly / metrics.income) * 100;
+                debtAnalysis = `
+                    <p><strong>Análise:</strong> Suas dívidas totalizam R$${metrics.debtTotal.toFixed(2)}, com pagamentos mensais de R$${metrics.debtMonthly.toFixed(2)} 
+                    (${debtRatio.toFixed(0)}% da sua renda). `;
+                
+                if (debtRatio > 30) {
+                    debtAnalysis += "Esse nível de endividamento é considerado perigoso e deve ser prioridade absoluta.";
+                } else if (debtRatio > 15) {
+                    debtAnalysis += "Esse nível de endividamento é moderado, mas ainda impacta sua saúde financeira.";
+                } else {
+                    debtAnalysis += "Esse nível de endividamento é gerenciável, mas ainda pode ser melhorado.";
+                }
+                
+                debtAnalysis += `</p>`;
+                
+                if (metrics.debtTypes && metrics.debtTypes.includes('credit_card')) {
+                    debtAnalysis += `
+                        <p><strong>Alerta:</strong> Dívidas de cartão de crédito têm juros altíssimos (média de 300% ao ano). 
+                        Cada R$100 de dívida pode virar R$400 em 1 ano se não pagar.</p>
+                    `;
+                }
+                
+                debtAnalysis += `
+                    <p><strong>Estratégia recomendada:</strong> `;
+                
+                if (metrics.riskTolerance === 'conservative') {
+                    debtAnalysis += `Método Snowball - Pague primeiro a menor dívida para ganhar motivação, mantendo mínimos nas outras.`;
+                } else {
+                    debtAnalysis += `Método Avalanche - Foque na dívida com maior taxa de juros primeiro (normalmente cartão de crédito), 
+                    mantendo pagamentos mínimos nas outras. Isso economizará mais em juros.`;
+                }
+                
+                document.getElementById('debtAnalysis').innerHTML = debtAnalysis;
+            } else {
+                document.getElementById('debtAnalysis').innerHTML = `
+                    <p><strong>Análise:</strong> Você não possui dívidas ativas. Parabéns! Isso coloca você em uma posição financeira muito mais segura.</p>
+                `;
+            }
+            
+            // Análise de investimentos
+            let investmentAnalysis = `
+                <p><strong>Perfil identificado:</strong> `;
+            
+            switch (metrics.riskTolerance) {
+                case 'conservative':
+                    investmentAnalysis += "Conservador - Prefere segurança mesmo com retornos menores";
+                    break;
+                case 'aggressive':
+                    investmentAnalysis += "Arrojado - Aceita riscos por retornos potencialmente maiores";
+                    break;
+                default:
+                    investmentAnalysis += "Moderado - Equilíbrio entre segurança e retorno";
+            }
+            
+            investmentAnalysis += `</p>`;
+            
+            if (metrics.debtTotal > 0) {
+                investmentAnalysis += `
+                    <p><strong>Recomendação:</strong> Antes de investir, recomendamos quitar dívidas, especialmente as com juros acima de 10% ao ano. 
+                    Pagar dívidas é como um investimento com retorno garantido igual à taxa de juros.</p>
+                `;
+            } else if (metrics.emergencyFundMonths < 3) {
+                investmentAnalysis += `
+                    <p><strong>Recomendação:</strong> Construa primeiro uma reserva de emergência de 3-6 meses de gastos em aplicações seguras e líquidas 
+                    como Tesouro Selic ou CDB com liquidez diária.</p>
+                `;
+            } else {
+                investmentAnalysis += `
+                    <p><strong>Estratégia recomendada:</strong></p>
+                    <ol>
+                        <li><strong>Curto prazo (Reserva):</strong> Tesouro Selic ou CDB 100% CDI</li>
+                        ${metrics.riskTolerance !== 'conservative' ? 
+                            `<li><strong>Médio prazo:</strong> ${metrics.riskTolerance === 'aggressive' ? 
+                                'Fundos Imobiliários e Ações' : 'LCI/LCA ou Fundos de Renda Fixa'}</li>` : ''}
+                        <li><strong>Longo prazo (Aposentadoria):</strong> 
+                            ${metrics.riskTolerance === 'conservative' ? 'Previdência Privada ou Tesouro IPCA+' :
+                            metrics.riskTolerance === 'aggressive' ? 'ETFs globais e Ações individuais' :
+                            'Fundo Multimercado ou ETFs diversificados'}
+                        </li>
+                    </ol>
+                `;
+            }
+            
+            document.getElementById('investmentAnalysis').innerHTML = investmentAnalysis;
+        }
+
+        // Navegação entre abas
+        function showTab(tabName) {
+            // Esconde todas as abas
+            document.querySelectorAll('.report-section').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove classe active de todas as tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostra a aba selecionada
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            // Adiciona classe active na tab clicada
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Simula o download do PDF
+        function downloadPlan() {
+            alert("Seu plano financeiro personalizado será gerado em PDF e baixado em instantes...");
+            // Na implementação real, isso seria uma chamada para um gerador de PDF
+        }
+
+        // Inicializa a barra de progresso
+        updateProgressBar();
+
+        // Configura o evento de submit do formulário
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("financialQuestionnaire");
+            if (form) {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    showAnalysis();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

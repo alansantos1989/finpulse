@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FinPulse - Consultoria Financeira Automatizada</title>
+<style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #F18F01;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.8)), url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta-button {
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #e07f00;
+            transform: translateY(-2px);
+        }
+        
+        .features {
+            padding: 4rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        .feature-card .icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .how-it-works {
+            background-color: var(--light);
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+        
+        .how-it-works h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 200px;
+            max-width: 250px;
+        }
+        
+        .step-number {
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: bold;
+        }
+        
+        .security {
+            padding: 4rem 1rem;
+            background-color: white;
+            text-align: center;
+        }
+        
+        .security h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .security p {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .testimonials {
+            background-color: var(--light);
+            padding: 4rem 1rem;
+        }
+        
+        .testimonials h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .testimonial {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 1rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            color: var(--secondary);
+            margin-top: 0;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap');
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #F6F6F6;
+        color: #2E4C5A;
+        margin: 0;
+        padding: 0;
+    }
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif;
+        color: #2E4C5A;
+    }
+    a, button, .btn {
+        background-color: #D4AF37 !important;
+        color: white !important;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+    header, footer {
+        background-color: #2E4C5A;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    section {
+        padding: 2rem;
+        margin: 1rem auto;
+        background: white;
+        max-width: 900px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    </style></head>
+<body>
+<header>
+<div class="logo">Fin<span>Pulse</span></div>
+<nav>
+<ul>
+<li><a href="servicos.html">Serviços</a></li>
+<li><a href="como_funciona.html">Como Funciona</a></li>
+<li><a href="#seguranca">Segurança</a></li>
+<li><a href="#depoimentos">Depoimentos</a></li>
+<li><a class="cta-button" href="login.html">Login</a></li>
+</ul>
+</nav>
+</header>
+<section class="hero">
+<h1>Controle financeiro simplificado e automatizado</h1>
+<p>Receba um plano financeiro personalizado em minutos, sem necessidade de reuniões. Responda nosso questionário e deixe nossa inteligência financeira trabalhar para você.</p>
+<button class="cta-button">Comece Agora - É Grátis</button>
+</section>
+<section class="features" id="servicos">
+<h2>Nossos Serviços Automatizados</h2>
+<div class="features-grid">
+<div class="feature-card">
+<div class="icon">💸</div>
+<h3>Planejamento Financeiro Completo</h3>
+<p>Obtenha um orçamento personalizado, análise de gastos e recomendações para melhorar sua saúde financeira em poucos minutos.</p>
+</div>
+<div class="feature-card">
+<div class="icon">📊</div>
+<h3>Score Financeiro</h3>
+<p>Descubra sua pontuação financeira (0-100) e receba um plano de ação para melhorá-la.</p>
+</div>
+<div class="feature-card">
+<div class="icon">🏦</div>
+<h3>Plano de Aposentadoria</h3>
+<p>Calcule quanto você precisa guardar por mês para atingir sua independência financeira.</p>
+</div>
+<div class="feature-card">
+<div class="icon">🧾</div>
+<h3>Eliminação de Dívidas</h3>
+<p>Receba um plano passo a passo para quitar suas dívidas mais rápido e economizar em juros.</p>
+</div>
+<div class="feature-card">
+<div class="icon">🎯</div>
+<h3>Alcançando Metas</h3>
+<p>Planeje como comprar uma casa, fazer uma viagem ou qualquer outro objetivo financeiro.</p>
+</div>
+<div class="feature-card">
+<div class="icon">📱</div>
+<h3>Aplicativo Mobile</h3>
+<p>Acompanhe seu progresso financeiro em qualquer lugar com nosso aplicativo exclusivo.</p>
+</div>
+</div>
+</section>
+<section class="how-it-works" id="como-funciona">
+<h2>Como Funciona</h2>
+<div class="steps">
+<div class="step">
+<div class="step-number">1</div>
+<h3>Responda o Questionário</h3>
+<p>Leva menos de 5 minutos e não requer documentos.</p>
+</div>
+<div class="step">
+<div class="step-number">2</div>
+<h3>Análise Automatizada</h3>
+<p>Nossa inteligência financeira processa seus dados.</p>
+</div>
+<div class="step">
+<div class="step-number">3</div>
+<h3>Receba Seu Plano</h3>
+<p>Obtenha recomendações personalizadas em tempo real.</p>
+</div>
+<div class="step">
+<div class="step-number">4</div>
+<h3>Implemente e Acompanhe</h3>
+<p>Monitore seu progresso e ajuste conforme necessário.</p>
+</div>
+</div>
+</section>
+<section class="security" id="seguranca">
+<h2>Segurança em Primeiro Lugar</h2>
+<p>Utilizamos criptografia de última geração para proteger seus dados. Não armazenamos informações bancárias sensíveis e seguimos rigorosamente a LGPD.</p>
+<button class="cta-button">Saiba Mais Sobre Segurança</button>
+</section>
+<section class="testimonials" id="depoimentos">
+<h2>O Que Nossos Clientes Dizem</h2>
+<div class="testimonial-grid">
+<div class="testimonial">
+<p class="testimonial-text">"O FinPulse revolucionou minha vida financeira. Em 3 meses já consegui organizar minhas dívidas e começar a investir."</p>
+<p class="testimonial-author">- Ana L., Professora</p>
+</div>
+<div class="testimonial">
+<p class="testimonial-text">"Finalmente entendi para onde estava indo meu dinheiro. O plano automatizado foi exatamente o que eu precisava."</p>
+<p class="testimonial-author">- Carlos M., Designer</p>
+</div>
+<div class="testimonial">
+<p class="testimonial-text">"Como freelancer, nunca soube planejar meus gastos. Agora tenho clareza e controle sobre minhas finanças."</p>
+<p class="testimonial-author">- Juliana R., Desenvolvedora</p>
+</div>
+</div>
+</section>
+<footer>
+<div class="footer-content">
+<div class="footer-column">
+<h3>FinPulse</h3>
+<p>Soluções financeiras automatizadas para ajudar você a alcançar seus objetivos com clareza e simplicidade.</p>
+</div>
+<div class="footer-column">
+<h3>Serviços</h3>
+<ul>
+<li><a href="#">Planejamento Financeiro</a></li>
+<li><a href="#">Aposentadoria</a></li>
+<li><a href="#">Eliminação de Dívidas</a></li>
+<li><a href="#">Metas Financeiras</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Sobre</h3>
+<ul>
+<li><a href="#">Nossa História</a></li>
+<li><a href="#">Equipe</a></li>
+<li><a href="#">Carreiras</a></li>
+<li><a href="#">Imprensa</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Contato</h3>
+<ul>
+<li><a href="#">Suporte</a></li>
+<li><a href="#">FAQ</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">LGPD</a></li>
+</ul>
+</div>
+</div>
+<div class="copyright">
+<p>© 2023 FinPulse Consultoria Financeira Automatizada. Todos os direitos reservados.</p>
+</div>
+</footer>
+</body>
+</html>

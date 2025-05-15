@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Serviços - FinPulse</title>
+<style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #F18F01;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(46, 134, 171, 0.9), rgba(46, 134, 171, 0.8)), url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .content-container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .service {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .service:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-image {
+            height: 180px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        .service-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 1rem 0;
+        }
+        
+        .service-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .service-features li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .service-features li:before {
+            content: "✓";
+            color: var(--success);
+            position: absolute;
+            left: 0;
+        }
+        
+        .service-button {
+            display: block;
+            width: 100%;
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        
+        .service-button:hover {
+            background-color: #e07f00;
+        }
+        
+        .free-plan {
+            border: 2px solid var(--secondary);
+            position: relative;
+        }
+        
+        .free-plan:after {
+            content: "MAIS POPULAR";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .testimonials {
+            margin: 4rem 0;
+        }
+        
+        .testimonial {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .faq-container {
+            margin: 4rem 0;
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .faq-question {
+            padding: 1rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 1rem 1.5rem;
+            display: none;
+        }
+        
+        .faq-answer.active {
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap');
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #F6F6F6;
+        color: #2E4C5A;
+        margin: 0;
+        padding: 0;
+    }
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif;
+        color: #2E4C5A;
+    }
+    a, button, .btn {
+        background-color: #D4AF37 !important;
+        color: white !important;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        text-decoration: none;
+    }
+    header, footer {
+        background-color: #2E4C5A;
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    section {
+        padding: 2rem;
+        margin: 1rem auto;
+        background: white;
+        max-width: 900px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    </style></head>
+<body>
+<header>
+<div class="logo">Fin<span>Pulse</span></div>
+<nav>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="servicos.html">Serviços</a></li>
+<li><a href="como_funciona.html">Como Funciona</a></li>
+<li><a href="login.html">Login</a></li>
+</ul>
+</nav>
+</header>
+<section class="hero">
+<h1>Serviços Financeiros Personalizados</h1>
+<p>Encontre o plano perfeito para suas necessidades financeiras, desde a organização básica até o planejamento completo</p>
+</section>
+<div class="content-container">
+<h2 class="section-title">Nossos Planos de Consultoria</h2>
+<div class="services-container">
+<div class="service">
+<div class="service-image">📊</div>
+<div class="service-content">
+<h3>Análise Básica</h3>
+<p>Obtenha um diagnóstico completo da sua saúde financeira atual</p>
+<div class="service-price">Grátis</div>
+<ul class="service-features">
+<li>Score financeiro personalizado</li>
+<li>Identificação de oportunidades de melhoria</li>
+<li>Relatório com 5 ações prioritárias</li>
+<li>Gráficos de renda vs. gastos</li>
+</ul>
+<a class="service-button" href="cadastro.html">Começar Agora</a>
+</div>
+</div>
+<div class="service free-plan">
+<div class="service-image">📈</div>
+<div class="service-content">
+<h3>Plano Essencial</h3>
+<p>Tudo que você precisa para organizar suas finanças</p>
+<div class="service-price">R$ 29/mês</div>
+<ul class="service-features">
+<li>Tudo do plano Básico</li>
+<li>Plano de ação completo em 3 etapas</li>
+<li>Estratégia para eliminar dívidas</li>
+<li>Calculadora de metas financeiras</li>
+<li>Acompanhamento mensal</li>
+</ul>
+<a class="service-button" href="cadastro.html">Assinar Plano</a>
+</div>
+</div>
+<div class="service">
+<div class="service-image">🚀</div>
+<div class="service-content">
+<h3>Plano Completo</h3>
+<p>Consultoria financeira abrangente com orientação personalizada</p>
+<div class="service-price">R$ 79/mês</div>
+<ul class="service-features">
+<li>Tudo do plano Essencial</li>
+<li>Planejamento de aposentadoria</li>
+<li>Estratégia de investimentos personalizada</li>
+<li>Revisão trimestral com ajustes</li>
+<li>Suporte prioritário</li>
+<li>Acesso a webinars exclusivos</li>
+</ul>
+<a class="service-button" href="cadastro.html">Assinar Plano</a>
+</div>
+</div>
+</div>
+<h2 class="section-title">Nossos Serviços Especializados</h2>
+<div class="services-container">
+<div class="service">
+<div class="service-image">🧾</div>
+<div class="service-content">
+<h3>Eliminação de Dívidas</h3>
+<p>Plano personalizado para sair das dívidas mais rápido</p>
+<ul class="service-features">
+<li>Análise completa das suas dívidas</li>
+<li>Método mais eficaz para seu caso</li>
+<li>Simulação de economia com diferentes estratégias</li>
+<li>Modelos de negociação com credores</li>
+</ul>
+<a class="service-button" href="#">Saiba Mais</a>
+</div>
+</div>
+<div class="service">
+<div class="service-image">🏠</div>
+<div class="service-content">
+<h3>Compra da Casa Própria</h3>
+<p>Planejamento completo para adquirir seu imóvel</p>
+<ul class="service-features">
+<li>Análise de capacidade financeira</li>
+<li>Comparativo de opções de financiamento</li>
+<li>Estratégia de economia para entrada</li>
+<li>Cronograma personalizado</li>
+</ul>
+<a class="service-button" href="#">Saiba Mais</a>
+</div>
+</div>
+<div class="service">
+<div class="service-image">🛡️</div>
+<div class="service-content">
+<h3>Planejamento de Aposentadoria</h3>
+<p>Garanta seu futuro com um plano realista</p>
+<ul class="service-features">
+<li>Projeção de necessidades futuras</li>
+<li>Análise de lacunas</li>
+<li>Estratégia de contribuição</li>
+<li>Alocação de ativos ideal</li>
+</ul>
+<a class="service-button" href="#">Saiba Mais</a>
+</div>
+</div>
+</div>
+<div class="testimonials">
+<h2 class="section-title">O Que Nossos Clientes Dizem</h2>
+<div class="testimonial">
+<p class="testimonial-text">"O Plano Essencial da FinPulse me ajudou a organizar minhas finanças em apenas 2 meses. Paguei R$3.000 em dívidas e comecei a investir pela primeira vez na vida!"</p>
+<p class="testimonial-author">- Ana L., Professora</p>
+</div>
+<div class="testimonial">
+<p class="testimonial-text">"Como freelancer, nunca sabia planejar meus gastos. A análise de renda variável da FinPulse foi um divisor de águas para minha saúde financeira."</p>
+<p class="testimonial-author">- Carlos M., Designer</p>
+</div>
+</div>
+<div class="faq-container">
+<h2 class="section-title">Perguntas Frequentes</h2>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+                    Como é feita a análise financeira? 
+                    <span>+</span>
+</div>
+<div class="faq-answer">
+<p>Nossa plataforma utiliza inteligência artificial para analisar suas respostas ao questionário inicial, comparando com milhares de casos similares. O algoritmo identifica padrões, oportunidades de melhoria e cria um plano personalizado com base em estratégias comprovadas.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+                    Posso mudar de plano depois? 
+                    <span>+</span>
+</div>
+<div class="faq-answer">
+<p>Sim, você pode mudar de plano a qualquer momento através da sua área de cliente. A mudança será efetivada no próximo ciclo de pagamento.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+                    Meus dados financeiros estão seguros? 
+                    <span>+</span>
+</div>
+<div class="faq-answer">
+<p>Absolutamente. Utilizamos criptografia de ponta a ponta e não armazenamos credenciais de acesso aos seus bancos. Todos os dados são protegidos conforme as normas da LGPD.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+                    Posso cancelar a qualquer momento? 
+                    <span>+</span>
+</div>
+<div class="faq-answer">
+<p>Sim, não há fidelidade. Você pode cancelar quando quiser através da sua área de cliente, sem taxas ou burocracia.</p>
+</div>
+</div>
+</div>
+</div>
+<footer>
+<div class="footer-links">
+<a href="#">Termos de Uso</a>
+<a href="#">Política de Privacidade</a>
+<a href="#">Contato</a>
+<a href="#">FAQ</a>
+</div>
+<p>© 2023 FinPulse Consultoria Financeira Automatizada. Todos os direitos reservados.</p>
+</footer>
+<script>
+        // Alternar FAQ
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const isActive = answer.classList.contains('active');
+            
+            // Fecha todas as respostas primeiro
+            document.querySelectorAll('.faq-answer').forEach(item => {
+                item.classList.remove('active');
+                item.previousElementSibling.querySelector('span').textContent = '+';
+            });
+            
+            // Abre a resposta clicada se não estava ativa
+            if (!isActive) {
+                answer.classList.add('active');
+                element.querySelector('span').textContent = '-';
+            }
+        }
+    </script>
+</body>
+</html>

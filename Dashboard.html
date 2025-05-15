@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - FinPulse</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2E4C5A;
+      --secondary: #D4AF37;
+      --accent: #2E86AB;
+      --light: #F6F6F6;
+      --dark: #2E4C5A;
+      --success: #28a745;
+      --warning: #F18F01;
+      --danger: #dc3545;
+    }
+    
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary);
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    
+    .logo span {
+      color: var(--secondary);
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .user-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: calc(100vh - 70px);
+    }
+    
+    .sidebar {
+      background-color: white;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    }
+    
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar-nav li {
+      margin-bottom: 1rem;
+    }
+    
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.8rem 1rem;
+      color: var(--dark);
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+    
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background-color: rgba(46, 76, 90, 0.1);
+      color: var(--primary);
+    }
+    
+    .sidebar-nav a i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    .main-content {
+      padding: 2rem;
+      background-color: var(--light);
+    }
+    
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .welcome-banner::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="rgba(255,255,255,0.1)"><path d="M30,10 Q50,0 70,10 T90,30 Q100,50 90,70 T70,90 Q50,100 30,90 T10,70 Q0,50 10,30 T30,10"></path></svg>');
+      background-size: contain;
+      opacity: 0.5;
+    }
+    
+    .welcome-banner h2 {
+      color: white;
+      margin-top: 0;
+    }
+    
+    .welcome-banner p {
+      max-width: 70%;
+      opacity: 0.9;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .card-header h3 {
+      margin: 0;
+    }
+    
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(212, 175, 55, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary);
+    }
+    
+    .btn {
+      background-color: var(--secondary);
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn:hover {
+      background-color: #c19e30;
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--secondary);
+      color: var(--secondary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--secondary);
+      color: white;
+    }
+    
+    .btn i {
+      font-size: 0.9em;
+    }
+    
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-top: 1rem;
+    }
+    
+    .progress-container {
+      margin-top: 1rem;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--secondary);
+      border-radius: 4px;
+    }
+    
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    
+    .budget-categories {
+      margin-top: 1rem;
+    }
+    
+    .category-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .category-item:last-child {
+      border-bottom: none;
+    }
+    
+    .category-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .category-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .category-amount {
+      font-weight: bold;
+    }
+    
+    .method-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    
+    .method-card h3 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+    
+    .method-card ul {
+      padding-left: 1.2rem;
+    }
+    
+    .method-card li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .simulator-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-group input, .form-group select {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+    
+    .downloads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .download-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+    }
+    
+    .download-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .download-icon {
+      font-size: 2rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .download-card h4 {
+      margin: 0.5rem 0;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .alert-warning {
+      background-color: rgba(241, 143, 1, 0.1);
+      border-left: 4px solid var(--warning);
+    }
+    
+    .alert i {
+      font-size: 1.2rem;
+    }
+    
+    @media (max-width: 992px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        display: none;
+      }
+      
+      .welcome-banner p {
+        max-width: 100%;
+      }
+    }
+
+    /* Estilos para a modal de edição */
+    #editModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+    }
+    
+    #editModal > div {
+      max-width: 500px;
+      margin: 5% auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      position: relative;
+    }
+    
+    #editModal label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    #editModal input, #editModal textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    #editModal textarea {
+      min-height: 100px;
+    }
+    
+    .edit-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Fin<span>Pulse</span></div>
+    <div class="user-profile">
+      <span>Olá, João Silva</span>
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuário">
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <nav>
+        <ul class="sidebar-nav">
+          <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="#"><i class="fas fa-chart-line"></i> Análises</a></li>
+          <li><a href="#"><i class="fas fa-wallet"></i> Orçamento</a></li>
+          <li><a href="#"><i class="fas fa-piggy-bank"></i> Investimentos</a></li>
+          <li><a href="#"><i class="fas fa-credit-card"></i> Cartões</a></li>
+          <li><a href="#"><i class="fas fa-bell"></i> Alertas</a></li>
+          <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+          <li><a href="#"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="welcome-banner">
+        <h2>Bem-vindo ao seu Dashboard Financeiro</h2>
+        <p>Acompanhe suas finanças, planeje seu futuro e tome decisões mais inteligentes com o FinPulse.</p>
+        <a href="questionario.html" class="btn"><i class="fas fa-play"></i> Iniciar Questionário</a>
+      </div>
+
+      <div class="alert alert-warning">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+          <strong>Atenção:</strong> Seu orçamento para lazer está próximo do limite. Considere revisar seus gastos.
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3>Saldo Atual</h3>
+            <div class="card-icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+          </div>
+          <h2 style="color: var(--primary); margin: 1rem 0;">R$ 8.745,23</h2>
+          <p>Disponível para uso este mês</p>
+          <div class="progress-container">
+            <div class="progress-labels">
+              <span>Gasto</span>
+              <span>65%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Meta Mensal</h3>
+            <div class="card-icon">
+              <i class="fas fa-bullseye"></i>
+            </div>
+          </div>
+          <h2 style="color: var(--primary); margin: 1rem 0;">R$ 1.200,00</h2>
+          <p>Economizado este mês</p>
+          <div class="progress-container">
+            <div class="progress-labels">
+              <span>Progresso</span>
+              <span>75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%"></div>
+            </div>
+          </div>
+          <button class="btn btn-outline" style="margin-top: 1rem;"><i class="fas fa-plus"></i> Adicionar Meta</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Próximas Contas</h3>
+            <div class="card-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+          </div>
+          <div class="budget-categories">
+            <div class="category-item">
+              <div class="category-name">
+                <div class="category-dot" style="background-color: var(--accent);"></div>
+                <span>Aluguel</span>
+              </div>
+              <div class="category-amount">R$ 1.500,00</div>
+            </div>
+            <div class="category-item">
+              <div class="category-name">
+                <div class="category-dot" style="background-color: var(--warning);"></div>
+                <span>Energia</span>
+              </div>
+              <div class="category-amount">R$ 180,00</div>
+            </div>
+            <div class="category-item">
+              <div class="category-name">
+                <div class="category-dot" style="background-color: var(--success);"></div>
+                <span>Internet</span>
+              </div>
+              <div class="category-amount">R$ 120,00</div>
+            </div>
+          </div>
+          <button class="btn btn-outline" style="margin-top: 1rem; width: 100%;"><i class="fas fa-eye"></i> Ver Todas</button>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <h3>Método 50/30/20</h3>
+        <p>
+          A regra 50/30/20 divide sua renda líquida da seguinte forma:
+        </p>
+        <ul>
+          <li><strong>50%</strong> para necessidades (moradia, contas, mercado)</li>
+          <li><strong>30%</strong> para desejos (lazer, viagens)</li>
+          <li><strong>20%</strong> para investimentos e objetivos</li>
+        </ul>
+      </div>
+
+      <div class="method-card">
+        <h3>Método 50/30/10/10</h3>
+        <p>
+          Já o método <strong>50/30/10/10</strong> é para quem tem dívidas:
+        </p>
+        <ul>
+          <li><strong>50%</strong> para necessidades</li>
+          <li><strong>30%</strong> para desejos</li>
+          <li><strong>10%</strong> vai para quitar dívidas</li>
+          <li><strong>10%</strong> ainda é guardado (reserva)</li>
+        </ul>
+      </div>
+
+      <div class="simulator-container">
+        <h2>Simulador de Divisão de Renda</h2>
+        <div class="form-group">
+          <label for="renda">Renda mensal líquida (R$):</label>
+          <input type="number" id="renda" placeholder="Ex: 4000">
+        </div>
+
+        <div class="form-group">
+          <label for="temDividas">Você possui dívidas?</label>
+          <select id="temDividas">
+            <option value="nao">Não</option>
+            <option value="sim">Sim</option>
+          </select>
+        </div>
+
+        <button class="btn" onclick="gerarGrafico()"><i class="fas fa-chart-pie"></i> Gerar Gráfico</button>
+
+        <div class="chart-container">
+          <canvas id="grafico"></canvas>
+        </div>
+      </div>
+
+      <section style="margin-top: 2rem;">
+        <h2>Downloads Úteis</h2>
+        <p>Baixe nossos modelos para ajudar no seu planejamento financeiro:</p>
+        
+        <div class="downloads-grid">
+          <div class="download-card">
+            <div class="download-icon">
+              <i class="fas fa-file-excel"></i>
+            </div>
+            <h4>Planilha de Orçamento</h4>
+            <button class="btn" onclick="window.open('planilha_orcamento.xlsx')" style="padding: 0.5rem 1rem; font-size: 0.9rem;"><i class="fas fa-download"></i> Baixar</button>
+          </div>
+          
+          <div class="download-card">
+            <div class="download-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h4>Checklist Financeiro</h4>
+            <button class="btn" onclick="window.open('checklist_financeiro.xlsx')" style="padding: 0.5rem 1rem; font-size: 0.9rem;"><i class="fas fa-download"></i> Baixar</button>
+          </div>
+          
+          <div class="download-card">
+            <div class="download-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <h4>Guia de Investimentos</h4>
+            <button class="btn" onclick="window.open('guia_investimentos.pdf')" style="padding: 0.5rem 1rem; font-size: 0.9rem;"><i class="fas fa-download"></i> Baixar</button>
+          </div>
+          
+          <div class="download-card">
+            <div class="download-icon">
+              <i class="fas fa-file-word"></i>
+            </div>
+            <h4>Controle de Dívidas</h4>
+            <button class="btn" onclick="window.open('controle_dividas.docx')" style="padding: 0.5rem 1rem; font-size: 0.9rem;"><i class="fas fa-download"></i> Baixar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Janela modal para edição de dados do usuário -->
+  <div id="editModal">
+    <div>
+      <h2>Editar Informações</h2>
+      <div class="form-group">
+        <label for="editNome">Nome:</label>
+        <input id="editNome" type="text">
+      </div>
+      <div class="form-group">
+        <label for="editRenda">Renda Mensal (R$):</label>
+        <input id="editRenda" type="number">
+      </div>
+      <div class="form-group">
+        <label for="editFoto">Foto (URL):</label>
+        <input id="editFoto" type="text">
+      </div>
+      <div class="form-group">
+        <label for="editContas">Contas Fixas (formato: nome:valor):</label>
+        <textarea id="editContas" rows="4"></textarea>
+      </div>
+      <div class="edit-buttons">
+        <button onclick="document.getElementById('editModal').style.display='none'" class="btn btn-outline">Cancelar</button>
+        <button onclick="salvarEdicao()" class="btn">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="abrirEdicao()" style="position: fixed; bottom: 20px; right: 20px; z-index: 999;" class="btn">
+    <i class="fas fa-user-edit"></i> Editar Dados
+  </button>
+
+  <script>
+    // Dados iniciais ou de localStorage
+    const dados = JSON.parse(localStorage.getItem("finpulseDados")) || {
+      nome: "João Silva",
+      renda: 4000,
+      foto: "https://randomuser.me/api/portraits/men/32.jpg",
+      contas: [
+        { nome: "Aluguel", valor: 1500 },
+        { nome: "Energia", valor: 180 },
+        { nome: "Internet", valor: 120 },
+      ],
+      saldo: 8745.23,
+      meta: 1200,
+      progressoMeta: 75,
+      gastoPercentual: 65
+    };
+
+    function atualizarDashboard() {
+      // Atualiza informações do usuário
+      document.querySelector('.user-profile span').textContent = `Olá, ${dados.nome}`;
+      document.querySelector('.user-profile img').src = dados.foto;
+      
+      // Atualiza o simulador
+      document.getElementById('renda').value = dados.renda;
+      gerarGrafico();
+      
+      // Atualiza contas fixas na seção "Próximas Contas"
+      const categorias = document.querySelector('.budget-categories');
+      categorias.innerHTML = '';
+      dados.contas.forEach((conta, index) => {
+        const cor = ['var(--accent)', 'var(--warning)', 'var(--success)', 'var(--danger)'][index % 4];
+        categorias.innerHTML += `
+          <div class="category-item">
+            <div class="category-name">
+              <div class="category-dot" style="background-color: ${cor};"></div>
+              <span>${conta.nome}</span>
+            </div>
+            <div class="category-amount">R$ ${conta.valor.toFixed(2)}</div>
+          </div>
+        `;
+      });
+      
+      // Atualiza o saldo atual
+      document.querySelector('.card:nth-child(1) h2').textContent = `R$ ${dados.saldo.toFixed(2)}`;
+      document.querySelector('.card:nth-child(1) .progress-fill').style.width = `${dados.gastoPercentual}%`;
+      document.querySelector('.card:nth-child(1) .progress-labels span:last-child').textContent = `${dados.gastoPercentual}%`;
+      
+      // Atualiza a meta mensal
+      document.querySelector('.card:nth-child(2) h2').textContent = `R$ ${dados.meta.toFixed(2)}`;
+      document.querySelector('.card:nth-child(2) .progress-fill').style.width = `${dados.progressoMeta}%`;
+      document.querySelector('.card:nth-child(2) .progress-labels span:last-child').textContent = `${dados.progressoMeta}%`;
+    }
+
+    function abrirEdicao() {
+      document.getElementById('editNome').value = dados.nome;
+      document.getElementById('editRenda').value = dados.renda;
+      document.getElementById('editFoto').value = dados.foto;
+      document.getElementById('editContas').value = dados.contas.map(c => `${c.nome}:${c.valor}`).join('\n');
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    function salvarEdicao() {
+      dados.nome = document.getElementById('editNome').value;
+      dados.renda = parseFloat(document.getElementById('editRenda').value);
+      dados.foto = document.getElementById('editFoto').value;
+      
+      const contasBrutas = document.getElementById('editContas').value.trim().split('\n');
+      dados.contas = contasBrutas.map(linha => {
+        const [nome, valor] = linha.split(':');
+        return { nome: nome.trim(), valor: parseFloat(valor.trim()) };
+      });
+      
+      localStorage.setItem("finpulseDados", JSON.stringify(dados));
+      document.getElementById('editModal').style.display = 'none';
+      atualizarDashboard();
+    }
+
+    function gerarGrafico() {
+      const renda = parseFloat(document.getElementById('renda').value) || dados.renda;
+      const temDividas = document.getElementById('temDividas').value;
+      
+      let labels, valores, cores;
+      if (temDividas === 'sim') {
+        labels = ["Necessidades (50%)", "Desejos (30%)", "Quitar Dívidas (10%)", "Poupança (10%)"];
+        valores = [renda * 0.5, renda * 0.3, renda * 0.1, renda * 0.1];
+        cores = ['#2E86AB', '#F18F01', '#dc3545', '#28a745'];
+      } else {
+        labels = ["Necessidades (50%)", "Desejos (30%)", "Investimentos (20%)"];
+        valores = [renda * 0.5, renda * 0.3, renda * 0.2];
+        cores = ['#2E86AB', '#F18F01', '#28a745'];
+      }
+
+      const ctx = document.getElementById('grafico').getContext('2d');
+      if (window.graficoPizza) window.graficoPizza.destroy();
+      window.graficoPizza = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Divisão da Renda',
+            data: valores,
+            backgroundColor: cores,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  label += 'R$ ' + context.raw.toFixed(2);
+                  return label;
+                }
+              }
+            }
+          },
+          cutout: '60%'
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      atualizarDashboard();
+      // Gerar gráfico inicial com valores padrão
+      document.getElementById('renda').value = dados.renda;
+      gerarGrafico();
+    });
+  </script>
+</body>
+</html>

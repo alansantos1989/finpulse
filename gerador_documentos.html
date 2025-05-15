@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Arquivos Financeiros - FinPulse</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f4f4f4; color: #333; }
+    h2 { color: #2E4C5A; }
+    .form-group { margin-bottom: 1rem; }
+    label { font-weight: bold; display: block; margin-bottom: 0.3rem; }
+    input, select, textarea { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px; }
+    button { background: #D4AF37; color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 5px; cursor: pointer; }
+    section { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h1>Gerador de Documentos Personalizados</h1>
+
+  <section>
+    <h2>Checklist Financeiro</h2>
+    <form id="formChecklist">
+      <div class="form-group">
+        <label>Você possui renda fixa mensal?</label>
+        <select name="q1"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <div class="form-group">
+        <label>Você possui outras fontes de renda?</label>
+        <select name="q2"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <div class="form-group">
+        <label>Você controla seus gastos fixos mensais?</label>
+        <select name="q3"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <div class="form-group">
+        <label>Você registra gastos variáveis como lazer e alimentação?</label>
+        <select name="q4"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <div class="form-group">
+        <label>Você tem reserva de emergência?</label>
+        <select name="q5"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <div class="form-group">
+        <label>Você sabe o total de dívidas?</label>
+        <select name="q6"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <div class="form-group">
+        <label>Você tem metas financeiras claras?</label>
+        <select name="q7"><option>Sim</option><option>Não</option><option>Parcial</option></select>
+      </div>
+      <button type="button" onclick="gerarChecklist()">Gerar Checklist Excel</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Controle de Dívidas</h2>
+    <form id="formDividas">
+      <div class="form-group">
+        <label>Descreva suas dívidas (tipo:valor:parcela:data início:data fim:juros:prioridade)</label>
+        <textarea id="listaDividas" rows="6" placeholder="Ex: Cartão de Crédito:2000:200:01/01/2024:01/01/2025:10:Alta"></textarea>
+      </div>
+      <button type="button" onclick="gerarDividas()">Gerar Planilha de Dívidas</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Guia de Investimentos Personalizado</h2>
+    <form id="formInvest">
+      <div class="form-group">
+        <label>Qual seu perfil de investidor?</label>
+        <select id="perfilInvestidor">
+          <option>Conservador</option>
+          <option>Moderado</option>
+          <option>Arrojado</option>
+        </select>
+      </div>
+      <button type="button" onclick="gerarGuiaInvest()">Gerar PDF Personalizado</button>
+    </form>
+  </section>
+
+  <script>
+    function gerarChecklist() {
+      const form = document.forms['formChecklist'];
+      const categorias = ["Renda", "Renda", "Despesas Fixas", "Despesas Variáveis", "Reservas", "Dívidas", "Planejamento"];
+      const itens = [
+        "Você possui renda fixa mensal?",
+        "Você possui outras fontes de renda?",
+        "Você tem controle dos gastos fixos?",
+        "Você registra gastos com lazer e alimentação?",
+        "Você possui reserva de emergência?",
+        "Você sabe o total de dívidas?",
+        "Você possui metas financeiras claras?"
+      ];
+      const status = [...form].slice(0, 7).map(f => f.value);
+      const df = XLSX.utils.aoa_to_sheet([
+        ["Categoria", "Item", "Status", "Observações"],
+        ...categorias.map((c, i) => [c, itens[i], status[i], ""])
+      ]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, df, "Checklist");
+      XLSX.writeFile(wb, "checklist_financeiro.xlsx");
+    }
+
+    function gerarDividas() {
+      const linhas = document.getElementById("listaDividas").value.trim().split("\n");
+      const dados = linhas.map(l => l.split(":"));
+      const header = ["Tipo de Dívida", "Valor Total", "Parcela Mensal", "Data Início", "Data Fim", "Juros (%)", "Prioridade"];
+      const ws = XLSX.utils.aoa_to_sheet([header, ...dados]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Dívidas");
+      XLSX.writeFile(wb, "controle_dividas.xlsx");
+    }
+
+    async function gerarGuiaInvest() {
+      const perfil = document.getElementById("perfilInvestidor").value;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const blocos = {
+        Conservador: "Seu perfil é Conservador. Priorize investimentos de baixo risco como Tesouro Direto, CDBs de grandes bancos, LCI/LCA e fundos de renda fixa.",
+        Moderado: "Seu perfil é Moderado. Combine segurança com um pouco de risco. Tesouro IPCA, fundos multimercado, REITs e fundos imobiliários são opções viáveis.",
+        Arrojado: "Seu perfil é Arrojado. Você pode investir em ações, criptomoedas, fundos agressivos e explorar oportunidades de alto retorno com consciência do risco."
+      };
+
+      doc.setFontSize(16);
+      doc.setTextColor(46, 76, 90);
+      doc.text("Guia Personalizado de Investimentos", 20, 20);
+
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Perfil: ${perfil}`, 20, 30);
+      doc.setFontSize(11);
+      doc.text(blocos[perfil], 20, 40, { maxWidth: 170 });
+
+      doc.save("guia_investimentos.pdf");
+    }
+  </script>
+</body>
+</html>

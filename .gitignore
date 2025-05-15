@@ -1,0 +1,10 @@
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar configurações do editor
+.idea
+.vscode
+
+# Ignorar node_modules (se você adicionar dependências no futuro)
+node_modules/
